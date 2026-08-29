@@ -3,8 +3,9 @@ pragma solidity >=0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract ExampleTokenERC721 is ERC721 {
+contract ExampleTokenERC721 is ERC721, Ownable {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
@@ -15,7 +16,7 @@ contract ExampleTokenERC721 is ERC721 {
         _safeMint(msg.sender, tokenId);
     }
 
-    function mint(address to) public {
+    function mint(address to) public onlyOwner {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
